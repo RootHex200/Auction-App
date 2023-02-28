@@ -33,7 +33,11 @@ class FirebaseServicess {
   }
 
   String getMaxBidPrice(List<dynamic> maxBidPrice) {
-    int max = int.parse(maxBidPrice[0]["bidprice"]);
+    if(maxBidPrice.length == 0){
+      return '0';
+    }
+    else{
+         int max = int.parse(maxBidPrice[0]["bidprice"]);
     String maxuser = maxBidPrice[0]["useremail"];
     for (int i = 0; i < maxBidPrice.length; i++) {
       if (max < int.parse(maxBidPrice[i]["bidprice"])) {
@@ -42,5 +46,6 @@ class FirebaseServicess {
       }
     }
     return 'Max Bid Price: $max, $maxuser is winner';
+    }
   }
 }
