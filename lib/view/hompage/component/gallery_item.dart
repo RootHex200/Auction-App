@@ -1,4 +1,5 @@
 import 'package:ebay/controller/firestore_controller.dart';
+import 'package:ebay/view/detailspage/product_detailspage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -26,7 +27,11 @@ class GalleryItem extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
-                      //TODO: add navigation to product details page
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                   AuctionDetailsPage(auctionAllpost: auctionAllpost.auctionpostlist[index],index: index,)));
                     },
                     child: Stack(
                       children: [
@@ -38,7 +43,6 @@ class GalleryItem extends StatelessWidget {
                               Container(
                                 height: 150,
                                 width: 150,
-                                
                                 decoration: BoxDecoration(
                                     image: DecorationImage(
                                         fit: BoxFit.cover,

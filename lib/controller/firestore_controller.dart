@@ -53,7 +53,8 @@ class FirestoreController extends GetxController {
 
   Stream<List<GetAllItemAuctionPostModel>> getAllauctionpostToFirebase() {
     String currentUserEmail = FirebaseServicess().user_current_check();
-    CollectionReference users = FirebaseFirestore.instance.collection("auctionpost");
+    CollectionReference users =
+        FirebaseFirestore.instance.collection("auctionpost");
     print(users.snapshots().map((query) => query.docs
         .map((e) => GetAllItemAuctionPostModel.fromJson(e))
         .toList()));
@@ -63,10 +64,26 @@ class FirestoreController extends GetxController {
 
   Stream<List<GetMyPostedItem>> getMypostedItem() {
     String currentUserEmail = FirebaseServicess().user_current_check();
-    CollectionReference users = FirebaseFirestore.instance.collection("auctionpost");
-    print(users..where('useremail', isEqualTo: currentUserEmail.toString()).snapshots().map((query) =>
-        query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList()));
-    return users.snapshots().map(
-        (query) => query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList());
+    CollectionReference users =
+        FirebaseFirestore.instance.collection("auctionpost");
+    return users
+      .where('useremail', isEqualTo: currentUserEmail.toString())
+          .snapshots()
+          .map((query) =>
+              query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList());
+    // return users.snapshots().map(
+    //     (query) => query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList());
+  }
+
+  void updateBidlist(String auctionid, String bidprice) {
+    String currentUserEmail = FirebaseServicess().user_current_check();
+
+    CollectionReference users =
+        FirebaseFirestore.instance.collection("auctionpost");
+    users.doc(auctionid).update({
+      "bidlist": FieldValue.arrayUnion([
+        {"useremail": currentUserEmail, "bidprice": bidprice}
+      ])
+    });
   }
 }
