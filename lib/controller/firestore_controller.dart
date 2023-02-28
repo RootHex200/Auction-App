@@ -1,8 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:get/state_manager.dart';
+import 'package:ebay/model/get_all_item_auction_post_model.dart';
+import 'package:ebay/model/get_my_posted_item.dart';
+import 'package:ebay/service/firebase_service.dart';
+import 'package:ebay/model/user_input_auction_post_model.dart';
+import 'package:ebay/view/hompage/homepage.dart';
 import 'package:get/get.dart';
 
 class FirestoreController extends GetxController {
+  RxList<GetAllItemAuctionPostModel> auctionpostlist =
+      RxList<GetAllItemAuctionPostModel>([]);
+
+  RxList<GetMyPostedItem> myposteditem = RxList<GetMyPostedItem>([]);
+  @override
+  void onInit() {
+    auctionpostlist.bindStream(getAllauctionpostToFirebase());
+    myposteditem.bindStream(getMypostedItem());
+    super.onInit();
+  }
+
   User_info_save(email, password) async {
     CollectionReference users = FirebaseFirestore.instance
         .collection('Allusers')
@@ -13,9 +28,45 @@ class FirestoreController extends GetxController {
       "user_email": email,
       "user_password": password,
     }).then((value) {
-      
-   //TODO: navigate to home page
-
+      Get.to(() => const Homepage());
     }).catchError((e) => print(e));
+  }
+
+  addauctionpostToFirebase(InputAuctionPostModel auctionPostModel) async {
+    String currentUserEmail = FirebaseServicess().user_current_check();
+    print("this is current user email $currentUserEmail");
+    var users = FirebaseFirestore.instance.collection("auctionpost");
+
+    users.add({
+      "useremail": currentUserEmail.toString(),
+      "productname": auctionPostModel.productname,
+      "productdescription": auctionPostModel.productdescription,
+      "minimumbidprice": auctionPostModel.minimumbidprice,
+      "auctionenddate": auctionPostModel.auctionenddate,
+      "thumimage": auctionPostModel.images[0],
+      "images": auctionPostModel.images,
+      "bidlist": []
+    }).then((value) {
+      Get.to(() => const Homepage());
+    }).catchError((e) => print(e));
+  }
+
+  Stream<List<GetAllItemAuctionPostModel>> getAllauctionpostToFirebase() {
+    String currentUserEmail = FirebaseServicess().user_current_check();
+    CollectionReference users = FirebaseFirestore.instance.collection("auctionpost");
+    print(users.snapshots().map((query) => query.docs
+        .map((e) => GetAllItemAuctionPostModel.fromJson(e))
+        .toList()));
+    return users.snapshots().map((query) =>
+        query.docs.map((e) => GetAllItemAuctionPostModel.fromJson(e)).toList());
+  }
+
+  Stream<List<GetMyPostedItem>> getMypostedItem() {
+    String currentUserEmail = FirebaseServicess().user_current_check();
+    CollectionReference users = FirebaseFirestore.instance.collection("auctionpost");
+    print(users..where('useremail', isEqualTo: currentUserEmail.toString()).snapshots().map((query) =>
+        query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList()));
+    return users.snapshots().map(
+        (query) => query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList());
   }
 }
