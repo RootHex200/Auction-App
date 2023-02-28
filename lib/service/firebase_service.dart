@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -31,5 +30,17 @@ class FirebaseServicess {
       imageUrls.add(url);
     }
     return imageUrls;
+  }
+
+  String getMaxBidPrice(List<dynamic> maxBidPrice) {
+    int max = int.parse(maxBidPrice[0]["bidprice"]);
+    String maxuser = maxBidPrice[0]["useremail"];
+    for (int i = 0; i < maxBidPrice.length; i++) {
+      if (max < int.parse(maxBidPrice[i]["bidprice"])) {
+        max = int.parse(maxBidPrice[i]["bidprice"]);
+        maxuser = maxBidPrice[i]["useremail"];
+      }
+    }
+    return 'Max Bid Price: $max, $maxuser is winner';
   }
 }

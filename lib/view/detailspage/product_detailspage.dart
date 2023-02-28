@@ -1,4 +1,5 @@
 import 'package:ebay/model/get_all_item_auction_post_model.dart';
+import 'package:ebay/service/firebase_service.dart';
 import 'package:ebay/view/detailspage/detailscomponent/bid_list.dart';
 import 'package:ebay/view/detailspage/detailscomponent/bid_now.dart';
 import 'package:ebay/view/detailspage/detailscomponent/product_view_image.dart';
@@ -9,10 +10,16 @@ import 'package:flutter/material.dart';
 class AuctionDetailsPage extends StatelessWidget {
   final GetAllItemAuctionPostModel auctionAllpost;
   final int index;
-  const AuctionDetailsPage({super.key, required this.auctionAllpost,required this.index});
+  const AuctionDetailsPage(
+      {super.key, required this.auctionAllpost, required this.index});
 
   @override
   Widget build(BuildContext context) {
+    var currentDateTime =
+        DateTime.parse(DateTime.now().toString().split(" ")[0]);
+    var enddate = DateTime.parse(auctionAllpost.auctionenddate.toString());
+    String maxbidprice = FirebaseServicess()
+        .getMaxBidPrice(auctionAllpost.bidlist as List<dynamic>);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
@@ -65,16 +72,30 @@ class AuctionDetailsPage extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    BidList(product_index: index,)
+                    BidList(
+                      product_index: index,
+                    )
                   ],
                 ),
               ),
             ),
-            BidNow(
-              enddate: auctionAllpost.auctionenddate.toString(),
-              id: auctionAllpost.id.toString(),
-              bidlist: auctionAllpost.bidlist as List<dynamic>,
-            )
+            currentDateTime.isAfter(enddate) || enddate == currentDateTime
+                ? Container(
+                    margin: const EdgeInsets.only(left: 20, right: 20),
+                    child: Center(
+                        child: Text(
+                      maxbidprice,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold),
+                    )),
+                  )
+                : BidNow(
+                    enddate: auctionAllpost.auctionenddate.toString(),
+                    id: auctionAllpost.id.toString(),
+                    bidlist: auctionAllpost.bidlist as List<dynamic>,
+                  )
           ],
         ));
   }
