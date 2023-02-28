@@ -1,7 +1,8 @@
 import 'package:ebay/firebase_options.dart';
-import 'package:ebay/view/hompage/homepage.dart';
+import 'package:ebay/view/athuntication/loginpage/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 
 void main()async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +18,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:Homepage(),
+      home:const Login_page(),
     );
   }
 }
