@@ -82,6 +82,7 @@ class _BidNowState extends State<BidNow> {
                             ElevatedButton(
                                 onPressed: () {
                                   firestoreController.updateBidlist(widget.id, bidController.text);
+                                  Navigator.of(context).pop();
                                 },
                                 child: const Text("Update"))
                           ],

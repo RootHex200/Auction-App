@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ebay/model/bist_updated_model.dart';
 import 'package:ebay/model/get_all_item_auction_post_model.dart';
 import 'package:ebay/model/get_my_posted_item.dart';
 import 'package:ebay/service/firebase_service.dart';
@@ -86,4 +87,22 @@ class FirestoreController extends GetxController {
       ])
     });
   }
+
+  void bidupdateUservalue(BitListUpdatedModel bitListUpdatedModel){
+    String currentUserEmail = FirebaseServicess().user_current_check();
+    CollectionReference users =
+        FirebaseFirestore.instance.collection("auctionpost");
+    users.doc(bitListUpdatedModel.auctionid).update({
+      "bidlist": FieldValue.arrayRemove([
+        {"useremail": currentUserEmail, "bidprice": bitListUpdatedModel.previousbidprice}
+      ])
+    });
+
+    updateBidlist(bitListUpdatedModel.auctionid.toString(), bitListUpdatedModel.newbidprice.toString());
+  
+  }
+
+  
+
+
 }
