@@ -1,21 +1,30 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ebay/model/bist_updated_model.dart';
 import 'package:ebay/model/get_all_item_auction_post_model.dart';
 import 'package:ebay/model/get_my_posted_item.dart';
+import 'package:ebay/model/running_bid_model.dart';
 import 'package:ebay/service/firebase_service.dart';
 import 'package:ebay/model/user_input_auction_post_model.dart';
+import 'package:ebay/view/bottomnavigation/bottomnavigationpage.dart';
 import 'package:ebay/view/hompage/homepage.dart';
 import 'package:get/get.dart';
 
 class FirestoreController extends GetxController {
   RxList<GetAllItemAuctionPostModel> auctionpostlist =
       RxList<GetAllItemAuctionPostModel>([]);
-
+  var runningbitcount = "".obs;
+  var completedbitcount = "".obs;
+  RxList<RunningBidModel> runingBidList = RxList<RunningBidModel>([]);
   RxList<GetMyPostedItem> myposteditem = RxList<GetMyPostedItem>([]);
+  RxList<CompletedBidModel> compelteBidList = RxList<CompletedBidModel>([]);
   @override
   void onInit() {
     auctionpostlist.bindStream(getAllauctionpostToFirebase());
     myposteditem.bindStream(getMypostedItem());
+    getRunningBid();
+    getCompletedBid();
     super.onInit();
   }
 
@@ -29,7 +38,7 @@ class FirestoreController extends GetxController {
       "user_email": email,
       "user_password": password,
     }).then((value) {
-      Get.to(() => const Homepage());
+      Get.to(() => const BottomNavigationPage());
     }).catchError((e) => print(e));
   }
 
@@ -68,10 +77,10 @@ class FirestoreController extends GetxController {
     CollectionReference users =
         FirebaseFirestore.instance.collection("auctionpost");
     return users
-      .where('useremail', isEqualTo: currentUserEmail.toString())
-          .snapshots()
-          .map((query) =>
-              query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList());
+        .where('useremail', isEqualTo: currentUserEmail.toString())
+        .snapshots()
+        .map((query) =>
+            query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList());
     // return users.snapshots().map(
     //     (query) => query.docs.map((e) => GetMyPostedItem.fromJson(e)).toList());
   }
@@ -88,21 +97,137 @@ class FirestoreController extends GetxController {
     });
   }
 
-  void bidupdateUservalue(BitListUpdatedModel bitListUpdatedModel){
+  void bidupdateUservalue(BitListUpdatedModel bitListUpdatedModel) {
     String currentUserEmail = FirebaseServicess().user_current_check();
     CollectionReference users =
         FirebaseFirestore.instance.collection("auctionpost");
     users.doc(bitListUpdatedModel.auctionid).update({
       "bidlist": FieldValue.arrayRemove([
-        {"useremail": currentUserEmail, "bidprice": bitListUpdatedModel.previousbidprice}
+        {
+          "useremail": currentUserEmail,
+          "bidprice": bitListUpdatedModel.previousbidprice
+        }
       ])
     });
 
-    updateBidlist(bitListUpdatedModel.auctionid.toString(), bitListUpdatedModel.newbidprice.toString());
-  
+    updateBidlist(bitListUpdatedModel.auctionid.toString(),
+        bitListUpdatedModel.newbidprice.toString());
   }
 
-  
+  // void getRuunigBid() {
+  //   List<RunningBidModel> filterlist = [];
+  //   var currentDateTime =
+  //       DateTime.parse(DateTime.now().toString().split(" ")[0]);
+  //   Stream<List<GetAllItemAuctionPostModel>> getAllbidlist =
+  //       getAllauctionpostToFirebase();
 
+  //   getAllbidlist.listen((data) {
+  //     print("this is data ${data.length}");
+  //     filterlist = [];
+  //     for (int i = 0; i < data.length; i++) {
+  //       var enddate =
+  //           DateTime.parse(data[i].auctionenddate.toString().split(" ")[0]);
 
+  //       if (currentDateTime.isBefore(enddate)) {
+  //         filterlist.add(RunningBidModel(time: enddate, bidnumber: i));
+  //       }
+  //     }
+  //     runingBidList.clear();
+  //     runingBidList.addAll(filterlist);
+  //     print("this is rxbidlist ${runingBidList.length}");
+  //     print("this is running bid ${filterlist.length}");
+  //   });
+  // }
+
+  void getRunningBid() {
+    List<GetAllItemAuctionPostModel> filterlist = [];
+    List<RunningBidModel> finalDataList = [];
+    List<String> dateList = [];
+
+    List<GetAllItemAuctionPostModel> bidnumer = [];
+
+    var currentDateTime =
+        DateTime.parse(DateTime.now().toString().split(" ")[0]);
+    Stream<List<GetAllItemAuctionPostModel>> getAllbidlist =
+        getAllauctionpostToFirebase();
+
+    getAllbidlist.listen((data) {
+      finalDataList.clear();
+      dateList.clear();
+      filterlist.clear();
+      bidnumer.clear();
+
+      for (int i = 0; i < data.length; i++) {
+        var enddate =
+            DateTime.parse(data[i].auctionenddate.toString().split(" ")[0]);
+
+        if (currentDateTime.isBefore(enddate)) {
+          dateList.add(data[i].auctionenddate.toString());
+          filterlist.add(data[i]);
+        }
+      }
+      runningbitcount.value = filterlist.length.toString();
+      dateList = dateList.toSet().toList();
+
+      for (int i = 0; i < dateList.length; i++) {
+        bidnumer.clear();
+        for (int j = 0; j < filterlist.length; j++) {
+          if (dateList[i] == filterlist[j].auctionenddate.toString()) {
+            bidnumer.add(filterlist[j]);
+          }
+        }
+        print("this is bid number ${bidnumer.length} and ${bidnumer}");
+        finalDataList.add(RunningBidModel(
+            time: DateTime.parse(dateList[i]), bidnumber: bidnumer.length));
+      }
+      runingBidList.clear();
+      runingBidList.addAll(finalDataList);
+    });
+  }
+
+  void getCompletedBid() {
+    List<GetAllItemAuctionPostModel> filterlist = [];
+    List<CompletedBidModel> finalDataList = [];
+    List<String> dateList = [];
+
+    List<GetAllItemAuctionPostModel> bidnumer = [];
+
+    var currentDateTime =
+        DateTime.parse(DateTime.now().toString().split(" ")[0]);
+    Stream<List<GetAllItemAuctionPostModel>> getAllbidlist =
+        getAllauctionpostToFirebase();
+
+    getAllbidlist.listen((data) {
+      finalDataList.clear();
+      dateList.clear();
+      filterlist.clear();
+      bidnumer.clear();
+
+      for (int i = 0; i < data.length; i++) {
+        var enddate =
+            DateTime.parse(data[i].auctionenddate.toString().split(" ")[0]);
+
+        if (currentDateTime.isAfter(enddate) || enddate == currentDateTime) {
+          dateList.add(data[i].auctionenddate.toString());
+          filterlist.add(data[i]);
+        }
+      }
+      completedbitcount.value = filterlist.length.toString();
+      dateList = dateList.toSet().toList();
+
+      for (int i = 0; i < dateList.length; i++) {
+        bidnumer.clear();
+        for (int j = 0; j < filterlist.length; j++) {
+          if (dateList[i] == filterlist[j].auctionenddate.toString()) {
+            bidnumer.add(filterlist[j]);
+          }
+        }
+        print("this is bid number ${bidnumer.length} and ${bidnumer}");
+        finalDataList.add(CompletedBidModel(
+            time: DateTime.parse(dateList[i]), bidnumber: bidnumer.length));
+      }
+      compelteBidList.clear();
+      compelteBidList.addAll(finalDataList);
+    });
+  }
 }

@@ -1,4 +1,5 @@
 import 'package:ebay/controller/firestore_controller.dart';
+import 'package:ebay/view/bottomnavigation/bottomnavigationpage.dart';
 import 'package:ebay/view/hompage/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,7 @@ class AuthController extends GetxController {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
-      Get.to(() => Homepage());
+      Get.to(() => BottomNavigationPage());
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         Get.snackbar("error", "No user found for that email.");
