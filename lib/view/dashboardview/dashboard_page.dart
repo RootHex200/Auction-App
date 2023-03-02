@@ -1,4 +1,5 @@
 import 'package:ebay/view/dashboardview/component/completed_bids.dart';
+import 'package:ebay/view/dashboardview/component/completed_bids_toal_value.dart';
 import 'package:ebay/view/dashboardview/component/running_bids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -18,7 +19,9 @@ class DashBoardPage extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            CompletedBidTimeSeriesChart()
+            CompletedBidTimeSeriesChart(),
+            SizedBox(height: 20,),
+            CompletedBidTotalPriceTimeSeriesChart(),
                 ],
               ),
           ),

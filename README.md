@@ -76,7 +76,7 @@ Ebay is android app version.this is another practice project.The app was made wi
 4. Get chart view from running bid ,completed bid ,i have 4 item in firebase that's why time series line is simple but when you added more item then it is will be more beautiful
    <details ><summary>snapshot</summary>
 
-   <img src="additem.jpeg" width="200" height="400" />
+   <img src="chart.jpeg" width="200" height="400" /> <img src="chart2.jpeg" width="200" height="400" />
 
    </details>
 ## Built With 
@@ -89,7 +89,7 @@ Features and Plugins I've used:
 
   
    
-*  APk Link: https://drive.google.com/file/d/1fOdxJ41DbMklSIwaCHHLZbMnGT7eX2Vr/view?usp=share_link
+*  APk Link: https://drive.google.com/file/d/1mN4g4z67RJyH3s6IJ04b90de1DC42imC/view?usp=share_link
 
 
 

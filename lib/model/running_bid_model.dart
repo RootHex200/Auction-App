@@ -22,3 +22,14 @@ class CompletedBidModel {
   });
   
 }
+
+class CompletedBidTotalValueModel {
+
+  final DateTime time;
+  final int bidpirce;
+  CompletedBidTotalValueModel({
+    required this.time,
+    required this.bidpirce,
+  });
+  
+}
