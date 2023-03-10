@@ -34,7 +34,7 @@ class FirebaseServicess {
 
   String getMaxBidPrice(List<dynamic> maxBidPrice) {
     if(maxBidPrice.length == 0){
-      return '0';
+      return 'No bid listed';
     }
     else{
          int max = int.parse(maxBidPrice[0]["bidprice"]);
