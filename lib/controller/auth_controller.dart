@@ -1,6 +1,5 @@
 import 'package:ebay/controller/firestore_controller.dart';
 import 'package:ebay/view/bottomnavigation/bottomnavigationpage.dart';
-import 'package:ebay/view/hompage/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 
