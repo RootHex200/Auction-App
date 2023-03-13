@@ -13,7 +13,7 @@ class GalleryItem extends StatelessWidget {
       children: [
         const SizedBox(height: 10),
         Obx(
-          () => Expanded(
+          () =>auctionAllpost.auctionpostlist.length==0?Center(child: CircularProgressIndicator(color: Colors.green,),): Expanded(
             child: GridView.builder(
                 shrinkWrap: true,
                 primary: false,

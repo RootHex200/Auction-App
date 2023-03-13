@@ -34,7 +34,15 @@ class _Login_pageState extends State<Login_page> {
         child: Column(
           children: [
             Container(
-              margin: const EdgeInsets.only(top: 50),
+                            height:250,
+              decoration: const BoxDecoration(
+                color: Colors.green,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                
+                )
+              ),
               child: Center(
                   child: InkWell(
                 onTap: () async {},
@@ -43,13 +51,11 @@ class _Login_pageState extends State<Login_page> {
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 25,
-                      color: Colors.green),
+                      color: Colors.white),
                 ),
               )),
             ),
-            const SizedBox(
-              height: 100,
-            ),
+            const SizedBox(height: 20,),
             Container(
               margin: const EdgeInsets.only(left: 30, right: 30),
               decoration: BoxDecoration(borderRadius: BorderRadius.circular(8)),
@@ -137,13 +143,14 @@ class _Login_pageState extends State<Login_page> {
                 height: 50,
                 width: double.maxFinite,
                 margin: const EdgeInsets.only(left: 30, right: 30),
-                decoration: const BoxDecoration(
+                decoration:  BoxDecoration(
                   color: Colors.green,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: const Center(
                     child: Text(
                   "Login",
-                  style: TextStyle(fontSize: 23),
+                  style: TextStyle(fontSize: 23,color: Colors.white),
                 )),
               ),
             ),
@@ -157,7 +164,7 @@ class _Login_pageState extends State<Login_page> {
                 children: [
                   InkWell(
                       onTap: () {
-                        Navigator.push(
+                        Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const Registration_page()));
@@ -174,7 +181,7 @@ class _Login_pageState extends State<Login_page> {
             )
           ],
         ),
-      ),
+      )
     );
   }
 }

@@ -8,7 +8,6 @@ import 'package:ebay/model/running_bid_model.dart';
 import 'package:ebay/service/firebase_service.dart';
 import 'package:ebay/model/user_input_auction_post_model.dart';
 import 'package:ebay/view/bottomnavigation/bottomnavigationpage.dart';
-import 'package:ebay/view/hompage/homepage.dart';
 import 'package:get/get.dart';
 
 class FirestoreController extends GetxController {
@@ -62,7 +61,7 @@ class FirestoreController extends GetxController {
       "images": auctionPostModel.images,
       "bidlist": []
     }).then((value) {
-      Get.to(() => const Homepage());
+      Get.to(() => const BottomNavigationPage());
     }).catchError((e) => print(e));
   }
 

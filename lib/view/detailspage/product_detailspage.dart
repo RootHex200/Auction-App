@@ -24,9 +24,12 @@ class AuctionDetailsPage extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0.0,
-          leading: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black,
+            ),
           ),
         ),
         body: Column(
@@ -81,12 +84,13 @@ class AuctionDetailsPage extends StatelessWidget {
             ),
             currentDateTime.isAfter(enddate) || enddate == currentDateTime
                 ? Container(
-                    margin: const EdgeInsets.only(left: 20, right: 20),
+                    margin:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     child: Center(
                         child: Text(
                       maxbidprice,
                       style: const TextStyle(
-                          color: Colors.black,
+                          color: Colors.green,
                           fontSize: 22,
                           fontWeight: FontWeight.bold),
                     )),
