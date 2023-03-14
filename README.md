@@ -1,5 +1,6 @@
 
 
+
 <div id="top"></div>
 <!-- PROJECT LOGO -->
 <br />
@@ -7,17 +8,17 @@
 
 
 
-## **Ebay**
+## **Auction App**
   <p align="center">
-    Ebay is another task project. that have like product biding system
+     Auction is another practice app. <br>I have learn more things from this project
     <br />
     <div>
   <img src="https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white" alt="Android" width="130" height="40" >
       <img src="https://img.shields.io/badge/iOS-000000?style=for-the-badge&logo=ios&logoColor=white" alt="Android" width="130" height="40" >
 </div>
-    <a href="https://github.com/RootHex200/ebay/issues">Report Bug</a>
+    <a href="https://github.com/RootHex200/Auction-App/issues">Report Bug</a>
     ·
-    <a href="https://github.com/RootHex200/ebay/issues">Request Feature</a>
+    <a href="https://github.com/RootHex200/Auction-App/issues">Request Feature</a>
   </p>
 
 </div>
@@ -44,8 +45,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 <div align="center">
+<!-- <img src="halishop.png"> -->
 </div><br>
-Ebay is android app version.this is another practice project.The app was made with Flutter as a Frontend technology and Firebase as a backend
+Auction is android app version.In this app user can new auction post and see all bid list and update bid list.and check dashboard of summary of product.The app was made with Flutter as a Frontend technology and Firebase as a backend
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -53,43 +55,48 @@ Ebay is android app version.this is another practice project.The app was made wi
 1. User Login and Registers.
    <details ><summary>snapshot</summary>
    
-    <img src="login.jpeg" width="200" height="400" />
+    <img src="readme_images/login.jpeg" width="200" height="400" /> <img src="readme_images/regi.jpeg" width="200" height="400" />
 
    </details>
-2. home page
+2. Home page
    <details ><summary>snapshot</summary>
 
-    <img src="gallery.jpeg" width="200" height="400" /> <img src="myitem.jpeg" width="200" height="400" /> 
+    <img src="readme_images/allpost.jpeg" width="200" height="400" /> <img src="readme_images/myitempost.jpeg" width="200" height="400" /> 
    </details>
 3. Details Page
    <details ><summary>snapshot</summary>
 
-   <img src="details.jpeg" width="200" height="400" />
+   <img src="readme_images/details.jpeg" width="200" height="400" />
 
    </details>
 3. Add item
    <details ><summary>snapshot</summary>
 
-   <img src="additem.jpeg" width="200" height="400" />
+   <img src="readme_images/addpost.jpeg" width="200" height="400" /> <img src="readme_images/addpost3.jpeg" width="200" height="400" /> <img src="readme_images/addpost2.jpeg" width="200" height="400" />
 
    </details>
-4. Get chart view from running bid ,completed bid ,i have 4 item in firebase that's why time series line is simple but when you added more item then it is will be more beautiful
+4. Winner Bid,no bid
    <details ><summary>snapshot</summary>
 
-   <img src="chart.jpeg" width="200" height="400" /> <img src="chart2.jpeg" width="200" height="400" />
+   <img src="readme_images/winner.jpeg" width="200" height="400" /> <img src="readme_images/nobid.jpeg" width="200" height="400" />
+
+   </details>
+5. Get chart view from running bid ,completed bid ,i have 10 item in firebase that's why time series line is simple but when you added more item then it is will be more beautiful
+   <details ><summary>snapshot</summary>
+
+   <img src="readme_images/dh2.jpeg" width="200" height="400" /> <img src="readme_images/dh1.jpeg" width="200" height="400" />
 
    </details>
 ## Built With 
 #### Frontend Technology  
 * [Flutter](https://flutter.dev/?gclsrc=ds&gclsrc=ds) <br>
 Features and Plugins I've used: 
+   - Firebase
    - Getx
-   - Image_picker
-   - firebase
 
   
    
-*  APk Link: https://drive.google.com/file/d/1mN4g4z67RJyH3s6IJ04b90de1DC42imC/view?usp=share_link
+<!-- * Demo video link: https://drive.google.com/file/d/1S6LpaHxbrwp68DeG-eQjMUd7tMP8nI50/view?usp=share_link -->
 
 
 
@@ -141,3 +148,8 @@ Features and Plugins I've used:
 then i see my updated bid price .. this my solution..
 
 - [x] and when your item date gone you show in details page who is winner to make this function.this is easy this is max numner find algorithm 
+
+    
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>

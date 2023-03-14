@@ -293,7 +293,7 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
                                                     auctionPostModel =
                                                     InputAuctionPostModel(
                                                         productname:
-                                                            productdescriptioncontroller
+                                                            productnamecontroller
                                                                 .text,
                                                         productdescription:
                                                             productdescriptioncontroller
