@@ -1,9 +1,11 @@
+import 'package:ebay/utils/colors.dart';
 import 'package:flutter/material.dart';
-
 
 class Summary extends StatelessWidget {
   final String description;
-  const Summary({super.key, required this.description});
+  final String sellerPhone;
+  const Summary(
+      {super.key, required this.description, required this.sellerPhone});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +18,7 @@ class Summary extends StatelessWidget {
           const Text(
             'Description',
             style: TextStyle(
-                color: Colors.green,
+                color: Appcolors.primaryColor,
                 fontSize: 18,
                 fontWeight: FontWeight.bold),
           ),
@@ -25,9 +27,30 @@ class Summary extends StatelessWidget {
             description.toString(),
             textAlign: TextAlign.justify,
             style: const TextStyle(
-              color: Colors.black54,
+              color: Appcolors.textSecondaryColor,
             ),
-          )
+          ),
+          const SizedBox(height: 10),
+          const Text(
+            'Seller Details',
+            style: TextStyle(
+                color: Appcolors.primaryColor,
+                fontSize: 18,
+                fontWeight: FontWeight.bold),
+          ),
+          const SizedBox(height: 10),
+          RichText(
+              text: TextSpan(children: [
+            const TextSpan(
+              text: "Phone Number:-   ",
+              style: TextStyle(
+                color: Appcolors.textSecondaryColor,
+              ),
+            ),
+            TextSpan(
+                text: sellerPhone.toString(),
+                style: const TextStyle(color: Colors.black)),
+          ])),
         ],
       ),
     );
