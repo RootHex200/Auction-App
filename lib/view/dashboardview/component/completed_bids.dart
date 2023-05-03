@@ -1,11 +1,12 @@
 import 'package:charts_flutter_new/flutter.dart' as charts;
 import 'package:ebay/controller/firestore_controller.dart';
 import 'package:ebay/model/running_bid_model.dart';
+import 'package:ebay/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CompletedBidTimeSeriesChart extends StatelessWidget {
-  const CompletedBidTimeSeriesChart();
+  const CompletedBidTimeSeriesChart({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +18,21 @@ class CompletedBidTimeSeriesChart extends StatelessWidget {
         Obx(
           () => Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Text("Completed Bid: ${firestoreController.completedbitcount.toString()}",
-              style: const TextStyle(color: Colors.black, fontSize: 20),
+            child: Text(
+              "Completed Bid: ${firestoreController.completedbitcount.toString()}",
+              style: const TextStyle(color: Appcolors.black, fontSize: 20),
             ),
           ),
         ),
         Container(
           margin: const EdgeInsets.all(20),
           height: 250,
-          child: Obx(
-            () => charts.TimeSeriesChart(
+          child: charts.TimeSeriesChart(
               _createSampleData(firestoreController.compelteBidList),
               animate: false,
               dateTimeFactory: const charts.LocalDateTimeFactory(),
             ),
-          ),
+         
         ),
       ],
     );
@@ -39,7 +40,6 @@ class CompletedBidTimeSeriesChart extends StatelessWidget {
 
   static List<charts.Series<CompletedBidModel, DateTime>> _createSampleData(
       bidlist) {
-    print("this is my bist list $bidlist");
 
     return [
       charts.Series<CompletedBidModel, DateTime>(
