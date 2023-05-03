@@ -1,11 +1,11 @@
-import 'dart:io';
-
+// ignore: file_names
 import 'package:ebay/controller/firestore_controller.dart';
+import 'package:ebay/controller/image_controller.dart';
 import 'package:ebay/model/user_input_auction_post_model.dart';
 import 'package:ebay/service/firebase_service.dart';
+import 'package:ebay/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AddAuctionPostPage extends StatefulWidget {
   const AddAuctionPostPage({super.key});
@@ -17,36 +17,12 @@ class AddAuctionPostPage extends StatefulWidget {
 class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
   final FirestoreController firestoreController =
       Get.put(FirestoreController());
-  List<File> _images = [];
-
-  final picker = ImagePicker();
-
-  Future getImageFromGallery() async {
-    // ignore: deprecated_member_use
-    final pickedFiles = await picker.getMultiImage();
-
-    setState(() {
-      _images = pickedFiles != null
-          ? pickedFiles.map((file) => File(file.path)).toList()
-          : [];
-    });
-  }
-
-  Future getImageFromCamera() async {
-    final pickedFile = await picker.getImage(source: ImageSource.camera);
-
-    setState(() {
-      if (pickedFile != null) {
-        _images.add(File(pickedFile.path));
-      }
-    });
-  }
+  final ImageController productUpload = Get.put(ImageController());
 
   late TextEditingController productnamecontroller;
   late TextEditingController productdescriptioncontroller;
   late TextEditingController minimumbidpricecontroller;
   late TextEditingController auctionenddatecontroller;
-  bool isloading = false;
   @override
   void initState() {
     productnamecontroller = TextEditingController();
@@ -68,22 +44,15 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Add Auction Post"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              margin: const EdgeInsets.only(top: 50),
-              child: const Center(
-                  child: Text(
-                "Add Auction Post",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              )),
-            ),
             const SizedBox(
-              height: 80,
+              height: 30,
             ),
             Container(
               margin: const EdgeInsets.only(left: 30, right: 30),
@@ -96,10 +65,10 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       hintText: "Product Name",
                     ),
@@ -109,13 +78,14 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
                   ),
                   TextFormField(
                     controller: productdescriptioncontroller,
+                    maxLines: 5,
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       hintText: "Product Description",
                     ),
@@ -129,10 +99,10 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       hintText: "Minimum Bid Price",
                     ),
@@ -151,10 +121,10 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black),
+                        borderSide: BorderSide(color: Appcolors.black),
                       ),
                       hintText: "Auction End Date",
                     ),
@@ -165,71 +135,84 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
             const SizedBox(
               height: 20,
             ),
-            _images.isEmpty
+            Obx(() => productUpload.images.isEmpty
                 ? const Text("No images selected")
-                : Center(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 20, right: 20),
-                      padding: const EdgeInsets.only(right: 20),
-                      height: 100,
-                      child: Row(
-                          children: _images
-                              .map((image) => Image.file(image))
-                              .toList()),
+                : Container(
+                    margin: const EdgeInsets.only(left: 20, right: 20),
+                    padding: const EdgeInsets.only(right: 20),
+                    height: 100,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: List.generate(
+                          productUpload.images.length >= 3
+                              ? 3
+                              : productUpload.images.length, (index) {
+                        return Stack(
+                          children: [
+                            Image.file(productUpload.images[index]),
+                            Positioned(
+                                top: 0,
+                                right: 0,
+                                child: GestureDetector(
+                                    onTap: () {
+                                      productUpload.images.removeAt(index);
+                                    },
+                                    child: const Icon(
+                                      Icons.remove_circle,
+                                      color: Colors.red,
+                                    ))),
+                          ],
+                        );
+                      }),
                     ),
-                  ),
+                  )),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green)),
                   onPressed: () {
-                    if (_images.length >= 3) {
+                    if (productUpload.images.length >= 3) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
                           content: Text('You can only select 3 images'),
                         ),
                       );
                     } else {
-                      getImageFromGallery();
+                      productUpload.getImageFromGallery();
                     }
                   },
                   child: const Text(
                     'Select Images from Gallery',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: Appcolors.white),
                   ),
                 ),
                 ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.green)),
                   onPressed: () {
-                    if (_images.length >= 3) {
+                    if (productUpload.images.length >= 3) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
+                          duration: Duration(milliseconds: 500),
                           content: Text('You can only select 3 images'),
                         ),
                       );
                     } else {
-                      getImageFromCamera();
+                      productUpload.getImageFromCamera();
                     }
                   },
                   child: const Text('Take a Picture',
-                      style: TextStyle(color: Colors.white)),
+                      style: TextStyle(color: Appcolors.white)),
                 ),
               ],
             ),
             const SizedBox(
-              height: 100,
+              height: 50,
             ),
-            Container(
-              margin: const EdgeInsets.only(left: 30, right: 30),
-              child: isloading
-                  ? Container(
-                      child: Row(
+            Obx(
+              () => Container(
+                margin: const EdgeInsets.only(left: 30, right: 30),
+                child: productUpload.isproductUploadLoading.value
+                    ? Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: const [
                           CircularProgressIndicator(),
@@ -238,95 +221,86 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
                           ),
                           Text("Please Wait data is uploading..."),
                         ],
-                      ),
-                    )
-                  : Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Colors.green),
+                      )
+                    : Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                if (productnamecontroller.text.isEmpty ||
+                                    productdescriptioncontroller.text.isEmpty ||
+                                    minimumbidpricecontroller.text.isEmpty ||
+                                    auctionenddatecontroller.text.isEmpty ||
+                                    productUpload.images.isEmpty) {
+                                  Get.snackbar("error", "filed is empty",backgroundColor: Appcolors.black,colorText: Appcolors.white);
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          content: const Text(
+                                              "You Want to Add New Auction Post"),
+                                          actions: [
+                                            TextButton(
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text("cancel")),
+                                            TextButton(
+                                                onPressed: () async {
+                                                  Navigator.of(context).pop();
+
+                                                  productUpload
+                                                      .isproductUploadLoading
+                                                      .value = true;
+
+                                                  List<String> images =
+                                                      await FirebaseServicess()
+                                                          .uploadImagesToFirebaseStorage(
+                                                              productUpload
+                                                                  .images);
+                                                  InputAuctionPostModel
+                                                      auctionPostModel =
+                                                      InputAuctionPostModel(
+                                                          productname:
+                                                              productnamecontroller
+                                                                  .text,
+                                                          productdescription:
+                                                              productdescriptioncontroller
+                                                                  .text,
+                                                          minimumbidprice:
+                                                              minimumbidpricecontroller
+                                                                  .text,
+                                                          auctionenddate:
+                                                              auctionenddatecontroller
+                                                                  .text,
+                                                          images: images);
+                                                  firestoreController
+                                                      .addauctionpostToFirebase(
+                                                          auctionPostModel);
+
+                                                  productUpload
+                                                      .isproductUploadLoading
+                                                      .value = false;
+
+                                                  // ignore: use_build_context_synchronously
+                                                },
+                                                child: const Text("ok")),
+                                          ],
+                                        );
+                                      });
+                                }
+                              },
+                              child: const Text("Add Auction Post"),
                             ),
-                            onPressed: () async {
-                              if (productnamecontroller.text.isEmpty ||
-                                  productdescriptioncontroller.text.isEmpty ||
-                                  minimumbidpricecontroller.text.isEmpty ||
-                                  auctionenddatecontroller.text.isEmpty ||
-                                  _images.isEmpty) {
-                                Get.snackbar("error", "filed is empty");
-                              } else {
-                                showDialog(
-                                    context: context,
-                                    builder: (context) {
-                                      return AlertDialog(
-                                        content: isloading == true
-                                            ? const CircularProgressIndicator()
-                                            : const Text(
-                                                "You Want to Add New Auction Post"),
-                                        actions: [
-                                                                                    TextButton(
-                                              onPressed: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text("cancel")),
-                                          TextButton(
-                                              onPressed: () async {
-                                                Navigator.of(context).pop();
-                                                setState(() {
-                                                  isloading = true;
-                                                });
-                                                print(
-                                                    "work is starting :$isloading");
-                                                Future.delayed(
-                                                    const Duration(seconds: 5),(){
-                                                  setState(() {
-                                                    isloading = false;
-                                                  
-                                                  });
-                                                    });
-                                                List<String> images =
-                                                    await FirebaseServicess()
-                                                        .uploadImagesToFirebaseStorage(
-                                                            _images);
-                                                InputAuctionPostModel
-                                                    auctionPostModel =
-                                                    InputAuctionPostModel(
-                                                        productname:
-                                                            productnamecontroller
-                                                                .text,
-                                                        productdescription:
-                                                            productdescriptioncontroller
-                                                                .text,
-                                                        minimumbidprice:
-                                                            minimumbidpricecontroller
-                                                                .text,
-                                                        auctionenddate:
-                                                            auctionenddatecontroller
-                                                                .text,
-                                                        images: images);
-                                                firestoreController
-                                                    .addauctionpostToFirebase(
-                                                        auctionPostModel);
-
-                                                setState(() {
-                                                  isloading = false;
-                                                });
-
-                                                // ignore: use_build_context_synchronously
-                                              },
-                                              child: const Text("ok")),
-                                        ],
-                                      );
-                                    });
-                              }
-                            },
-                            child: const Text("Add Auction Post"),
                           ),
-                        ),
-                      ],
-                    ),
+                        ],
+                      ),
+              ),
             ),
+            const SizedBox(
+              height: 10,
+            )
           ],
         ),
       ),
@@ -339,6 +313,11 @@ class _AddAuctionPostPageState extends State<AddAuctionPostPage> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
-    auctionenddatecontroller.text = pikcerTime.toString().split(" ")[0];
+
+    if (pikcerTime != null) {
+     auctionenddatecontroller.text = pikcerTime.toString().split(" ")[0]; 
+    }else{
+      auctionenddatecontroller.text = "";
+    }
   }
 }
