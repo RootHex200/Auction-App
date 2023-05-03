@@ -1,6 +1,6 @@
 import 'package:ebay/service/firebase_service.dart';
 import 'package:ebay/utils/colors.dart';
-import 'package:ebay/view/athuntication/loginpage/login_page.dart';
+import 'package:ebay/view/Authenticationpage/loginpage/login_page.dart';
 import 'package:ebay/view/bottomnavigation/bottomnavigationpage.dart';
 import 'package:flutter/material.dart';
 
