@@ -24,9 +24,14 @@
 </div>
 
 
+<!-- ABOUT THE PROJECT -->
 ## About The Project
 <div align="center">
-<img src="halishop.png"
+<img src="readme_images/auction.png">
+</div><br>
+Auction is android app version.In this app user can add new auction post and see all bid list and update bid list in specific date of post.and check dashboard of summary of product.The app was made with Flutter as a Frontend technology and Firebase as a backend
+
+* APK Link: https://drive.google.com/file/d/10P2IgMyglC76n2URLKnZA0UPdb-bXxmg/view?usp=share_link
 
 <details open >
   <summary style="cursor: pointer;">Table of Contents</summary>
@@ -44,15 +49,7 @@
 
 
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
-<div align="center">
-<img src="readme_images/auction.png">
-</div><br>
-Auction is android app version.In this app user can add new auction post and see all bid list and update bid list in specific date of post.and check dashboard of summary of product.The app was made with Flutter as a Frontend technology and Firebase as a backend
-<br>
-<br>
-* APK Link: https://drive.google.com/file/d/10P2IgMyglC76n2URLKnZA0UPdb-bXxmg/view?usp=share_link
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Features with Snapshots
