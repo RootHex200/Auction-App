@@ -13,9 +13,7 @@ class GalleryItem extends StatelessWidget {
       () => Expanded(
         child: auctionAllpost.auctionpostlist.isEmpty
             ? const Center(
-                child: CircularProgressIndicator(
-                  
-                ),
+                child: CircularProgressIndicator(),
               )
             : GridView.builder(
                 padding: const EdgeInsets.only(top: 0),
@@ -34,7 +32,7 @@ class GalleryItem extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => AuctionDetailsPage(
-                                  fromPage: "homepage",
+                                    fromPage: "homepage",
                                     auctionAllpost:
                                         auctionAllpost.auctionpostlist[index],
                                     index: index,
@@ -65,20 +63,20 @@ class GalleryItem extends StatelessWidget {
                                         style: BorderStyle.solid)),
                               ),
                               const SizedBox(height: 10),
-                              SizedBox(
-                                height: 40,
-                                child: Text(
-                                  auctionAllpost
-                                      .auctionpostlist[index].productname
-                                      .toString(),
-                                  textAlign: TextAlign.center,
-                                  maxLines: 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      color: Appcolors.black,
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w500),
-                                ),
+                              Text(
+                                auctionAllpost
+                                    .auctionpostlist[index].productname
+                                    .toString(),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                    color: Appcolors.black,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w500),
+                              ),
+                              const SizedBox(
+                                height: 20,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -113,14 +111,23 @@ class GalleryItem extends StatelessWidget {
                                       ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 10),
-                                    child: Text(
-                                        " \$${auctionAllpost.auctionpostlist[index].minimumbidprice.toString()}",
-                                        style: const TextStyle(
-                                            color: Appcolors.primaryColor,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold)),
+                                  SizedBox(
+                                    width: 80,
+                                    child: Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(right: 10),
+                                        child: Text(
+                                            "৳${auctionAllpost.auctionpostlist[index].minimumbidprice.toString()}",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: Appcolors.primaryColor,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.bold)),
+                                      ),
+                                    ),
                                   )
                                 ],
                               )

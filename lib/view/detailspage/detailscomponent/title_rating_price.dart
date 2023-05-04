@@ -27,10 +27,11 @@ class TitleRatingPrice extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: [
               SizedBox(
-                  width: MediaQuery.of(context).size.width - 100,
+                  width: MediaQuery.of(context).size.width - 150,
                   child: Text(
                     producttitle,
-                    maxLines: 3,
+                    maxLines: 4,
+                    textAlign: TextAlign.justify,
                     style: const TextStyle(
                         color: Colors.black,
                         fontWeight: FontWeight.bold,
@@ -69,16 +70,18 @@ class TitleRatingPrice extends StatelessWidget {
             ],
           ),
           Container(
-            height: 80,
-            width: 80,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
             decoration: BoxDecoration(
                 color: Appcolors.grey.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(8)),
             child: Center(
                 child: Text(
-              "${price.toString()}\৳",
+              "৳$price",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: const TextStyle(
                 color: Appcolors.primaryColor,
+                fontWeight: FontWeight.bold,
                 fontSize: 15,
               ),
             )),

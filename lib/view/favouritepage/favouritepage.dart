@@ -46,12 +46,11 @@ class Favourite_pages extends StatelessWidget {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => AuctionDetailsPage(
-                                    fromPage: "favouritepage",
+                                        fromPage: "favouritepage",
                                         auctionAllpost: favouritecontroller
                                             .getfavouritedata[index],
                                         index: index,
                                       )));
-                        
                         },
                         child: Container(
                           height: 140,
@@ -146,14 +145,22 @@ class Favourite_pages extends StatelessWidget {
                                             ),
                                           ),
                                           const SizedBox(
-                                            width: 20,
+                                            width: 15,
                                           ),
-                                          Text(
-                                            "\$${favouritecontroller.getfavouritedata[index].minimumbidprice!.toString()}",
-                                            style: const TextStyle(
-                                                color: Appcolors.black,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20),
+                                          SizedBox(
+                                            width: 60,
+                                            child: Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Text(
+                                                "৳${favouritecontroller.getfavouritedata[index].minimumbidprice!.toString()}",
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    color: Appcolors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16),
+                                              ),
+                                            ),
                                           ),
                                           const SizedBox(
                                             width: 40,

@@ -92,7 +92,7 @@ class MyPostedItem extends StatelessWidget {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  'Bid Price:${auctionmypost.myposteditem[index].minimumbidprice.toString()}\$',
+                                  'Bid Price:${auctionmypost.myposteditem[index].minimumbidprice.toString()}\৳',
                                   style: const TextStyle(
                                       color: Appcolors.primaryColor,
                                       fontSize: 14,
