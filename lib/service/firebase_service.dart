@@ -6,10 +6,9 @@ class FirebaseServicess {
     final FirebaseAuth auth = FirebaseAuth.instance;
     User? user = auth.currentUser;
     if (user != null) {
-      return user.email!;
-    } else {
-      print('No user is currently signed in.');
+      return user.uid;
     }
+    return " ";
   }
 
   Future<List<String>> uploadImagesToFirebaseStorage(images) async {
@@ -32,20 +31,35 @@ class FirebaseServicess {
     return imageUrls;
   }
 
+  // //delete image from firebase storage
+  // Future<void> deleteImageFromFirebaseStorage(String url) async {
+  //   await FirebaseStorage.instance.refFromURL(url).delete();
+  // }
+
   String getMaxBidPrice(List<dynamic> maxBidPrice) {
-    if(maxBidPrice.length == 0){
+    if (maxBidPrice.isEmpty) {
       return 'No bid listed';
-    }
-    else{
-         int max = int.parse(maxBidPrice[0]["bidprice"]);
-    String maxuser = maxBidPrice[0]["useremail"];
-    for (int i = 0; i < maxBidPrice.length; i++) {
-      if (max < int.parse(maxBidPrice[i]["bidprice"])) {
-        max = int.parse(maxBidPrice[i]["bidprice"]);
-        maxuser = maxBidPrice[i]["useremail"];
+    } else {
+      int max = int.parse(maxBidPrice[0]["bidprice"]);
+      String maxid = maxBidPrice[0]["userid"];
+      String maxusername = maxBidPrice[0]["username"];
+      for (int i = 0; i < maxBidPrice.length; i++) {
+        if (max < int.parse(maxBidPrice[i]["bidprice"])) {
+          max = int.parse(maxBidPrice[i]["bidprice"]);
+          maxid = maxBidPrice[i]["userid"];
+          maxusername = maxBidPrice[i]["username"];
+        }
       }
+      return '$max $maxid $maxusername';
     }
-    return 'Max Bid Price: $max, $maxuser is winner';
-    }
+  }
+
+  deletedUser() async {
+    await FirebaseAuth.instance.signOut();
+    // FirebaseFirestore.instance
+    //     .collection("Allusers")
+    //     .doc(user_current_check())
+    //     .delete();
+    // await FirebaseAuth.instance.currentUser?.delete();
   }
 }

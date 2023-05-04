@@ -1,3 +1,4 @@
+import 'package:ebay/utils/colors.dart';
 import 'package:ebay/view/detailspage/detailscomponent/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
@@ -21,7 +22,7 @@ class ProductImageView extends StatelessWidget {
           image: images,
         )),
         const Divider(
-          color: Colors.grey,
+          color: Appcolors.grey,
           thickness: 2,
           height: 2,
         ),

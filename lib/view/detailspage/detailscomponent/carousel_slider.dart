@@ -1,6 +1,6 @@
 import 'package:carousel_nullsafety/carousel_nullsafety.dart';
+import 'package:ebay/utils/colors.dart';
 import 'package:flutter/material.dart';
-
 
 class CarouselSlider extends StatelessWidget {
   final List<String>? image;
@@ -14,12 +14,14 @@ class CarouselSlider extends StatelessWidget {
         height: 260,
         width: MediaQuery.of(context).size.width - 100,
         child: Carousel(
-          images: List.generate(image!.length, (index) => NetworkImage(
-                image![index]),),
+          images: List.generate(
+            image!.length,
+            (index) => NetworkImage(image![index]),
+          ),
           borderRadius: true,
           dotBgColor: Colors.transparent,
-          dotColor: Colors.grey.withOpacity(0.4),
-          dotIncreasedColor: Colors.green,
+          dotColor: Appcolors.grey.withOpacity(0.4),
+          dotIncreasedColor: Appcolors.primaryColor,
         ),
       ),
     );
