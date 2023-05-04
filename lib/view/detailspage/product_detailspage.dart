@@ -15,7 +15,10 @@ class AuctionDetailsPage extends StatelessWidget {
   final auctionAllpost;
   final int index;
   const AuctionDetailsPage(
-      {super.key, required this.auctionAllpost, required this.index,required this.fromPage});
+      {super.key,
+      required this.auctionAllpost,
+      required this.index,
+      required this.fromPage});
 
   @override
   Widget build(BuildContext context) {
@@ -146,22 +149,22 @@ class AuctionDetailsPage extends StatelessWidget {
                   ),
                 ),
               ),
-              auctionAllpost.userid == firestoreController.userinfo.value.uid
-                  ? Container()
-                  : currentDateTime.isAfter(enddate) ||
-                          enddate == currentDateTime
-                      ? Container(
-                          margin: const EdgeInsets.only(
-                              left: 20, right: 20, bottom: 20),
-                          child: Center(
-                              child: Text(
-                            maxbidprice,
-                            style: const TextStyle(
-                                color: Appcolors.primaryColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          )),
-                        )
+              currentDateTime.isAfter(enddate) || enddate == currentDateTime
+                  ? Container(
+                      margin: const EdgeInsets.only(
+                          left: 20, right: 20, bottom: 20),
+                      child: Center(
+                          child: Text(
+                        maxbidprice,
+                        style: const TextStyle(
+                            color: Appcolors.primaryColor,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold),
+                      )),
+                    )
+                  : auctionAllpost.userid ==
+                          firestoreController.userinfo.value.uid
+                      ? Container()
                       : BidNow(
                           enddate: auctionAllpost.auctionenddate.toString(),
                           id: auctionAllpost.id.toString(),
